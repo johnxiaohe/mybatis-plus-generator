@@ -49,9 +49,9 @@ public class $!{table.controllerName} {
     @GetMapping("/$!{table.entityPath}")
     @ApiOperation(value = "$!{table.entityPath}详细信息接口", notes = "传入$!{table.entityPath}ID")
 #if($!{cfg.unifiedResults})
-    public $!{cfg.unifiedResultsClass}<$!{entity}> detail(@ApiParam(name="主键", required = true) @RequestParam("主键") Long id) {
+    public $!{cfg.unifiedResultsClass}<$!{entity}> detail(@ApiParam(name="主键", required = true) @RequestParam("id") Long id) {
 #else
-    public $!{entity} detail(@ApiParam(name="主键", required = true) @RequestParam("主键") Long id) {
+    public $!{entity} detail(@ApiParam(name="主键", required = true) @RequestParam("id") Long id) {
 #end
         $!{entity} detail = $!{table.entityPath}Service.getById(id);
     #if($!{cfg.unifiedResults})
@@ -127,9 +127,9 @@ public class $!{table.controllerName} {
     @DeleteMapping("/$!{table.entityPath}")
     @ApiOperation(value = "删除$!{table.entityPath}", notes = "传入id")
 #if($!{cfg.unifiedResults})
-    public $!{cfg.unifiedResultsClass} remove(@ApiParam(name="主键", required = true) @RequestParam("主键") Long id) {
+    public $!{cfg.unifiedResultsClass} remove(@ApiParam(name="主键", required = true) @RequestParam("id") Long id) {
 #else
-    public boolean remove(@ApiParam(name="主键", required = true) @RequestParam("主键") Long id) {
+    public boolean remove(@ApiParam(name="主键", required = true) @RequestParam("id") Long id) {
 #end
     #if($!{cfg.unifiedResults})
     if($!{table.entityPath}Service.removeById(id)){
