@@ -1,0 +1,161 @@
+
+package $!{package.Entity};
+
+#foreach($pkg in $!{table.importPackages})
+import $!{pkg};
+#end
+#if($!{entityLombokModel})
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+#end
+#if($!{swagger2})
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+#end
+
+/**
+ * <p>
+ * $!{table.comment}
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if($!{entityLombokModel})
+@Data
+#if($!{superEntityClass})
+@EqualsAndHashCode(callSuper = true)
+#end
+#end
+#if(${table.convert})
+@TableName("${table.name}")
+#end
+#if(${swagger2})
+@ApiModel(value="${entity}实体类", description="$!{table.comment}")
+#end
+
+#if($!{superEntityClass})
+public class $!{entity} extends $!{superEntityClass}#if($!{activeRecord})<$!{entity}>#end {
+#elseif($!{activeRecord})
+@Accessors(chain = true)
+public class $!{entity} extends Model<$!{entity}> {
+#else
+public class $!{entity} implements Serializable {
+#end
+    private static final long serialVersionUID = 65535L;
+
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${table.fields})
+## 判断是否是主键: 是的话设置主键属性名称keyPropertyName
+#if(${field.keyFlag})
+    #set($keyPropertyName=${field.propertyName})
+#end
+## 添加字段注释以及属性swagger注释
+#if("$!field.comment" != "")
+#if(${swagger2})
+    @ApiModelProperty(value = "${field.comment}")
+#else
+    /**
+     * ${field.comment}
+     */
+#end
+#end
+## 判断字段属性是否是主键
+#if(${field.keyFlag})
+    ## 如果主键添加主键注解
+#if(${field.keyIdentityFlag})
+    @TableId(value = "${field.annotationColumnName}", type = IdType.AUTO)
+#elseif(!$null.isNull(${idType}) && "$!idType" != "")
+    @TableId(value = "${field.annotationColumnName}", type = IdType.${idType})
+#elseif(${field.convert})
+    @TableId("${field.annotationColumnName}")
+#end
+## 普通字段
+#elseif(${field.fill})
+    ## -----   存在字段填充设置   -----
+#if(${field.convert})
+    @TableField(value = "${field.annotationColumnName}", fill = FieldFill.${field.fill})
+#else
+    @TableField(fill = FieldFill.${field.fill})
+#end
+#elseif(${field.convert})
+    @TableField("${field.annotationColumnName}")
+#end
+## 乐观锁注解
+#if(${versionFieldName}==${field.name})
+    @Version
+#end
+## 逻辑删除注解
+#if(${logicDeleteFieldName}==${field.name})
+    @TableLogic
+#end
+    private $!{field.propertyType} $!{field.propertyName};
+
+#end
+## ----------  END 字段循环遍历  ----------
+
+## 没有开启lombok,自动生成get、set
+#if(!$!{entityLombokModel})
+#foreach($field in $!{table.fields})
+## 判断自动生成get方法前缀
+#if($!{field.propertyType.equals("boolean")})
+    #set($getprefix="is")
+#else
+    #set($getprefix="get")
+#end
+## get方法生成
+    public $!{field.propertyType} $!{getprefix}$!{field.capitalName}() {
+        return $!{field.propertyName};
+    }
+
+## set方法生成
+#if($!{entityBuilderModel}) ## 判断是否是建造者模式
+   public $!{entity} set$!{field.capitalName}($!{field.propertyType} $!{field.propertyName}){
+#else ## 非建造者模式
+   public void set$!{field.capitalName}($!{field.propertyType} $!{field.propertyName}){
+#end
+        this.$!{field.propertyName} = $!{field.propertyName};
+    #if($!{entityBuilderModel})
+        return this
+    #end
+}
+
+#end
+#end
+
+## 定义类常量
+#if($!{entityColumnConstant})
+    #foreach($field in $!{table.fields})
+    public static final String $!{field.name.toUpperCase()} = "$!{field.name}";
+    #end
+#end
+
+#if($!{activeRecord})
+@Override
+protected Serializable pkVal() {
+    #if($!{keyPropertyName})
+            return this.$!{keyPropertyName};
+    #else
+            return this.id;
+    #end
+        }
+
+#end
+## 没有开启lombok则需要创建toString方法
+#if(!$!{entityLombokModel})
+    @Override
+    public String toString() {
+        return "$!{entity}{" +
+    #foreach($field in $!{table.fields})
+        #if($!{velocityCount}==1)
+        "$!{field.propertyName}=" + $!{field.propertyName} +
+    #else
+    ", $!{field.propertyName}=" + $!{field.propertyName} +
+    #end
+    #end
+    "}";
+    }
+#end
+
+
+}

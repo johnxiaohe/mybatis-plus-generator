@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.reuben.generator</groupId>
+    <artifactId>mybatis-plus-generator</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <!--   版本仅用于生成构建文件依赖时使用,不影响业务服务版本.     -->
+        <mybatis-plus-generator-version>3.3.2</mybatis-plus-generator-version>
+        <spring-core-version>5.1.15.RELEASE</spring-core-version>
+        <slf4j-version>1.7.26</slf4j-version>
+        <fawkes-version>1.7.0-RELEASE</fawkes-version>
+        <mysql-connection-version>8.0.17</mysql-connection-version>
+        <template-engine-version>1.7</template-engine-version>
+        <lombok-version>1.18.12</lombok-version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${mybatis-plus-generator-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring-core-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fawkes</groupId>
+            <artifactId>fawkes-core</artifactId>
+            <version>${fawkes-version}</version>
+        </dependency>
+        <!--    仅支持mysql其他版本数据库连接驱动自行添加    -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connection-version}</version>
+        </dependency>
+        <!--    代码生成实现模板引擎,仅支持velocity.还有其他模板Freemarker、Beetl.但生成模板需要对应写    -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>${template-engine-version}</version>
+        </dependency>
+        <!--    lombok依赖    -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok-version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

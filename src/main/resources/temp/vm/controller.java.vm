@@ -1,0 +1,145 @@
+
+package $!{package.Controller};
+
+import javax.validation.Valid;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+#if($!{entityLombokModel})
+import lombok.AllArgsConstructor;
+#else
+import org.springframework.beans.factory.annotation.Autowired;
+#end
+#if($!{cfg.unifiedResults})
+import $!{cfg.unifiedResultsFullpath};
+#end
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springframework.web.bind.annotation.*;
+import $!{package.Entity}.$!{entity};
+import $!{package.Service}.$!{table.serviceName};
+
+/**
+ * $!{table.comment} 控制器
+ *
+ * @author $!{author}
+ * @since $!{date}
+ */
+@RestController
+#if($!{entityLombokModel})
+@AllArgsConstructor
+#end
+##@RequestMapping("#if($!{package.ModuleName})/$!{package.ModuleName}#end/$!{cfg.entityKey}")
+@Api(value = "$!{table.comment}", tags = "$!{table.comment}接口")
+#if($!{superControllerClass})
+public class $!{table.controllerName} extends $!{superControllerClass} {
+#else
+public class $!{table.controllerName} {
+#end
+#if($!{entityLombokModel})
+    private final $!{table.serviceName} $!{table.entityPath}Service;
+#else
+    @Autowired
+    private $!{table.serviceName} $!{table.entityPath}Service;
+#end
+
+    /**
+     * $!{table.comment}详情
+     */
+    @GetMapping("/$!{table.entityPath}")
+    @ApiOperation(value = "$!{table.entityPath}详细信息接口", notes = "传入$!{table.entityPath}ID")
+#if($!{cfg.unifiedResults})
+    public $!{cfg.unifiedResultsClass}<$!{entity}> detail(@ApiParam(name="主键", required = true) @RequestParam("主键") Long id) {
+#else
+    public $!{entity} detail(@ApiParam(name="主键", required = true) @RequestParam("主键") Long id) {
+#end
+        $!{entity} detail = $!{table.entityPath}Service.getById(id);
+    #if($!{cfg.unifiedResults})
+    return $!{cfg.unifiedResultsClass}.$!{cfg.unifiedResultsStaticSuccessSet}(detail);
+    #else
+    return detail;
+    #end
+}
+
+    /**
+     * 查询列表 $!{table.comment}
+     */
+    @GetMapping("/$!{table.entityPath}s")
+    @ApiOperation(value = "查询列表 $!{table.comment}", notes = "传入$!{table.entityPath}")
+#if($!{cfg.unifiedResults})
+    public $!{cfg.unifiedResultsClass}<IPage<$!{entity}>> list(@ApiParam(name="$!{entity}实体类") $!{entity} $!{table.entityPath},@ApiParam(name="分页查询参数", required = true) IPage<$!{entity}> page) {
+#else
+    public IPage<$!{entity}> list(@ApiParam(name="$!{entity}实体类") $!{entity} $!{table.entityPath},@ApiParam(name="分页查询参数", required = true) IPage<$!{entity}> page) {
+#end
+        IPage<$!{entity}> pages = $!{table.entityPath}Service.page(page, new QueryWrapper($!{table.entityPath}));
+    #if($!{cfg.unifiedResults})
+    return $!{cfg.unifiedResultsClass}.$!{cfg.unifiedResultsStaticSuccessSet}(pages);
+    #else
+    return pages;
+    #end
+}
+
+    /**
+     * 新增 $!{table.comment}
+     */
+    @PostMapping("/$!{table.entityPath}")
+    @ApiOperation(value = "新增$!{table.entityPath}", notes = "传入$!{table.entityPath}")
+#if($!{cfg.unifiedResults})
+    public $!{cfg.unifiedResultsClass} save(@ApiParam(name="$!{entity}实体类", required = true) @Valid @RequestBody $!{entity} $!{table.entityPath}) {
+#else
+    public boolean save(@ApiParam(name="$!{entity}实体类", required = true) @Valid @RequestBody $!{entity} $!{table.entityPath}) {
+#end
+    #if($!{cfg.unifiedResults})
+    if($!{table.entityPath}Service.save($!{table.entityPath})){
+            return $!{cfg.unifiedResultsClass}.$!{cfg.unifiedResultsStaticSuccessSet}();
+        }else{
+            return $!{cfg.unifiedResultsClass}.$!{cfg.unifiedResultsStaticFailureSet}();
+        }
+    #else
+    return $!{table.entityPath}Service.save($!{table.entityPath});
+    #end
+}
+
+    /**
+     * 修改 $!{table.comment}
+     */
+    @PutMapping("/$!{table.entityPath}")
+    @ApiOperation(value = "修改$!{table.entityPath}", notes = "传入$!{table.entityPath}")
+#if($!{cfg.unifiedResults})
+    public $!{cfg.unifiedResultsClass} update(@ApiParam(name="$!{entity}实体类", required = true) @Valid @RequestBody $!{entity} $!{table.entityPath}) {
+#else
+    public boolean update(@ApiParam(name="$!{entity}实体类", required = true) @Valid @RequestBody $!{entity} $!{table.entityPath}) {
+#end
+    #if($!{cfg.unifiedResults})
+    if($!{table.entityPath}Service.updateById($!{table.entityPath})){
+            return $!{cfg.unifiedResultsClass}.$!{cfg.unifiedResultsStaticSuccessSet}();
+        }else{
+            return $!{cfg.unifiedResultsClass}.$!{cfg.unifiedResultsStaticFailureSet}();
+        }
+    #else
+    return $!{table.entityPath}Service.updateById($!{table.entityPath});
+    #end
+}
+
+   /**
+    * 删除 $!{table.comment}
+    */
+    @DeleteMapping("/$!{table.entityPath}")
+    @ApiOperation(value = "删除$!{table.entityPath}", notes = "传入id")
+#if($!{cfg.unifiedResults})
+    public $!{cfg.unifiedResultsClass} remove(@ApiParam(name="主键", required = true) @RequestParam("主键") Long id) {
+#else
+    public boolean remove(@ApiParam(name="主键", required = true) @RequestParam("主键") Long id) {
+#end
+    #if($!{cfg.unifiedResults})
+    if($!{table.entityPath}Service.removeById(id)){
+            return $!{cfg.unifiedResultsClass}.$!{cfg.unifiedResultsStaticSuccessSet}();
+        }else{
+            return $!{cfg.unifiedResultsClass}.$!{cfg.unifiedResultsStaticFailureSet}();
+        }
+    #else
+    return $!{table.entityPath}Service.removeById(id);
+    #end
+}
+
+}
