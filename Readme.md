@@ -1,7 +1,7 @@
 ## 使用步骤
-> 1. 使用前首先在resources/remp下创建code.properties文件
+> 1. 使用前首先在resources/temp下创建code.properties文件
 > 2. 修改对应内容.下有内容信息介绍
-> 3. 启动代码构建main方法
+> 3. 启动代码构建`GeneratorTool.main`方法
 
 ## 内容信息介绍
 ```text
@@ -10,6 +10,10 @@ spring.datasource.url=jdbc:mysql://{数据库地址}/{数据库名}?useSSL=false
 spring.datasource.username=用户名
 spring.datasource.password=密码
 author=作者
+# 是否开启swaggger2模式.生成swaggger注解
+is-swagger2=true
+# 支持类型: mysql、oracle、h2、sqlserver、mariadb | 需要引入对应连接驱动
+db-type=mysql
 
 # 生成代码的包名前缀例如com.demo
 package.name=
@@ -41,4 +45,15 @@ unified.results.static.success.set=
 unified.results.static.failure.set=
 # 错误消息;
 unified.results.static.failure.msg=
+```
+
+## 错误解决
+#### 1. 默认Mybatis-plus提供单表方法提示invalid bound statement (not found)
+> 查看是否自定义了SessionFactory.将自定义的切换为MybatisSqlSessionFactoryBean
+```java
+public SqlSessionFactory dataSourceFactory() throws Exception {
+    MybatisSqlSessionFactoryBean factoryBean = new MybatisSqlSessionFactoryBean();
+    factoryBean.setDataSource(dataSource());
+    return factoryBean.getObject();
+}
 ```
