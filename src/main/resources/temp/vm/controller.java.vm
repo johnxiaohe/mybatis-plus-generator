@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import $!{cfg.unifiedResultsFullpath};
 #end
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
 import $!{package.Entity}.$!{entity};
 import $!{package.Service}.$!{table.serviceName};
@@ -67,9 +67,9 @@ public class $!{table.controllerName} {
     @GetMapping("/$!{table.entityPath}s")
     @ApiOperation(value = "查询列表 $!{table.comment}", notes = "传入$!{table.entityPath}")
 #if($!{cfg.unifiedResults})
-    public $!{cfg.unifiedResultsClass}<IPage<$!{entity}>> list(@ApiParam(name="$!{entity}实体类") $!{entity} $!{table.entityPath},@ApiParam(name="分页查询参数", required = true) IPage<$!{entity}> page) {
+    public $!{cfg.unifiedResultsClass}<IPage<$!{entity}>> list(@ApiParam(name="$!{entity}实体类") $!{entity} $!{table.entityPath},@ApiParam(name="分页查询参数", required = true) Page<$!{entity}> page) {
 #else
-    public IPage<$!{entity}> list(@ApiParam(name="$!{entity}实体类") $!{entity} $!{table.entityPath},@ApiParam(name="分页查询参数", required = true) IPage<$!{entity}> page) {
+    public IPage<$!{entity}> list(@ApiParam(name="$!{entity}实体类") $!{entity} $!{table.entityPath},@ApiParam(name="分页查询参数", required = true) Page<$!{entity}> page) {
 #end
         IPage<$!{entity}> pages = $!{table.entityPath}Service.page(page, new QueryWrapper($!{table.entityPath}));
     #if($!{cfg.unifiedResults})

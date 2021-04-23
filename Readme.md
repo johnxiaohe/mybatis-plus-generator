@@ -80,7 +80,7 @@ mybatis-plus:
       table-underline: true
       column-underline: true
       # * 逻辑删除配置
-      # entity逻辑删除字段属性名
+      # entity逻辑删除字段属性名   实体类字段上加上@TableLogic注解
       logic-delete-field: deleteFlag
       #逻辑删除配置(1表示已删除)
       logic-delete-value: -1
