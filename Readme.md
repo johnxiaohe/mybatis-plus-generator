@@ -47,6 +47,57 @@ unified.results.static.failure.set=
 unified.results.static.failure.msg=
 ```
 
+## 业务模块配置修改
+1. Application启动类上添加注解`@MapperScan(basePackages={"mapperpath","mapperpath"})`
+2. 配置讲解.必要加*
+> 更多请查看[Mybatis-Plus使用配置](https://mp.baomidou.com/config/#%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE)
+```yaml
+#mybatis
+mybatis-plus:
+  # * 定义Mapper
+  mapper-locations: classpath:com/reuben/demo/mapper/*Mapper.xml
+  # * 实体类扫描，多个package用逗号或者分号分隔开。指定后mapper中可以直接使用类名不需要指定全限定类名(建议还是用全限定类名好)
+  type-aliases-package: com.reuben.demo.entity
+  # 搭配type-aliases-package使用,配置该属性后将只扫描该属性的子类作为域对象
+  type-aliases-supertype:
+  # 配置该属性后,sqlsessionfactorybean会去加载该包下的typehandler类(自定义类型转换类)
+  type-handlers-package:
+  # 定义枚举类包路径,如果配置该属性会帮实体类注入枚举字段
+  type-enums-package:
+  # mybatis-plus全局配置策略
+  global-config:
+    # 控制台打印Mybatis-plus logo开关
+    banner: false
+    # 可指定自定义SQL注入器`com.baomidou.mybatisplus.core.injector.ISqlInjector`来修改指定方法的执行sql(也可通过@bean注入)
+    sql-injector:
+    # 设置mapper超类,sqlInjector只会对该类的子类方法有影响
+    super-mapper-class:
+    # db生成策略
+    db-config:
+      # * 主键类型：0 AUTO 数据库ID自增，1 NONE 该类型为未设置主键类型约等于用户输入ID，2 INPUT 用户输入ID，3 ASSIGN_ID=ID_WORKER 全局唯一ID,雪花算法实现 4 ASSIGN_UUID 全局UUID String类型
+      id-type: ASSIGN_ID
+      #* 驼峰下划线
+      table-underline: true
+      column-underline: true
+      # * 逻辑删除配置
+      # entity逻辑删除字段属性名
+      logic-delete-field: deleteFlag
+      #逻辑删除配置(1表示已删除)
+      logic-delete-value: -1
+      #逻辑未删除配置(0表示未删除)
+      logic-not-delete-value: 0
+  # * 配置mybatis原生支持
+  configuration:
+    # 开启驼峰命名映射
+    map-underscore-to-camel-case: true
+    # 默认枚举处理类,定义该属性后会由它处理枚举属性
+    default-enum-type-handler:
+    # 一级缓存域定义: 默认为session; 可设置为STATEMENT来关闭一级缓存（建议关闭,微服务分布式架构多节点情况下一级缓存也可能会有脏数据问题.查询效率应从数据库层面解决)
+    local-cache-scope: STATEMENT
+    # 是否开启二级缓存(建议关闭,对自定义多表查询有脏语句风险)
+    cache-enabled: false
+```
+
 ## 错误解决
 #### 1. 默认Mybatis-plus提供单表方法提示invalid bound statement (not found)
 > 查看是否自定义了SessionFactory.将自定义的切换为MybatisSqlSessionFactoryBean
