@@ -82,8 +82,8 @@ mybatis-plus:
       # * 逻辑删除配置
       # entity逻辑删除字段属性名   实体类字段上加上@TableLogic注解
       logic-delete-field: deleteFlag
-      #逻辑删除配置(1表示已删除)
-      logic-delete-value: -1
+      #逻辑删除配置(1表示已删除) 默认0否1是.最好别搞其他的值
+      logic-delete-value: 1
       #逻辑未删除配置(0表示未删除)
       logic-not-delete-value: 0
   # * 配置mybatis原生支持
@@ -96,6 +96,39 @@ mybatis-plus:
     local-cache-scope: STATEMENT
     # 是否开启二级缓存(建议关闭,对自定义多表查询有脏语句风险)
     cache-enabled: false
+```
+
+3. 当自定义SqlSessionFactory时注意改为MybatisSqlSessionFactoryBean
+```java
+// mybatis-plus配置自定义全局配置注入
+@Bean(name = "mybatisPlusGlobalConfig")
+@Primary
+@ConfigurationProperties(prefix = "mybatis-plus.global-config")
+public GlobalConfig globalConfig(){
+    return new GlobalConfig();
+}
+
+// Mybatis-plus配置mybatis注入
+@Bean(name = "mybatisPlusConfiguration")
+@Primary
+@ConfigurationProperties(prefix = "mybatis-plus.configuration")
+public MybatisConfiguration mybatisConfiguration(){
+    return new MybatisConfiguration();
+}
+/**
+ * 工厂
+ */
+@Bean("dataSourceFactory")
+@Primary
+@DependsOn("dataSource")
+public SqlSessionFactory dataSourceFactory() throws Exception {
+    // 这里替换SqlSessionFactoryBean为MybatisSqlSessionFactoryBean
+    MybatisSqlSessionFactoryBean factoryBean = new MybatisSqlSessionFactoryBean();
+    factoryBean.setDataSource(dataSource());
+    factoryBean.setConfiguration(mybatisConfiguration());
+    factoryBean.setGlobalConfig(globalConfig());
+    return factoryBean.getObject();
+}
 ```
 
 ## 错误解决
