@@ -37,11 +37,6 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j-version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.fawkes</groupId>
-            <artifactId>fawkes-core</artifactId>
-            <version>${fawkes-version}</version>
-        </dependency>
         <!--    仅支持mysql其他版本数据库连接驱动自行添加    -->
         <dependency>
             <groupId>mysql</groupId>
