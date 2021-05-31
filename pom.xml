@@ -16,9 +16,10 @@
         <spring-core-version>5.1.15.RELEASE</spring-core-version>
         <slf4j-version>1.7.26</slf4j-version>
         <fawkes-version>1.7.0-RELEASE</fawkes-version>
-        <mysql-connection-version>8.0.17</mysql-connection-version>
+        <mysql-connection-version>8.0.22</mysql-connection-version>
         <template-engine-version>1.7</template-engine-version>
         <lombok-version>1.18.12</lombok-version>
+        <openapi.version>1.4.8</openapi.version>
     </properties>
 
     <dependencies>
@@ -28,6 +29,12 @@
             <version>${mybatis-plus-generator-version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.4.6</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>${spring-core-version}</version>
@@ -36,11 +43,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fawkes</groupId>
-            <artifactId>fawkes-core</artifactId>
-            <version>${fawkes-version}</version>
         </dependency>
         <!--    仅支持mysql其他版本数据库连接驱动自行添加    -->
         <dependency>
@@ -59,6 +61,32 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${openapi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webmvc-core</artifactId>
+            <version>${openapi.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.7.0</version>
         </dependency>
     </dependencies>
 
